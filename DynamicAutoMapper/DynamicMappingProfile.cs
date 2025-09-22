@@ -49,6 +49,8 @@ namespace DynamicAutoMapper
 
         private static IEnumerable<Type> FindMatchingTypes(Type source, IEnumerable<Type> domainModelTypes, Func<Type, Type, bool> typeFilter)
         {
+            typeFilter ??= ((s, t) => s.Name == t.Name);
+
             return domainModelTypes.Where(target => typeFilter(source, target));
         }
     }
