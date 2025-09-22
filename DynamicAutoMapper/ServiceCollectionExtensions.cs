@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace DynamicAutoMapper
 {
@@ -13,10 +15,25 @@ namespace DynamicAutoMapper
                     if (configureOptions != null)
                     {
                         configureOptions(options);
-                        var profile = ActivatorUtilities.CreateInstance<DynamicMappingProfile>(serviceProvider, options);
-                        config.AddProfile(profile);
+
+                        var profileTypes = (options.AdditionalAssemblies ?? [])
+                            .SelectMany(assembly => GetProfileTypes(assembly))
+                            .ToList();
+
+                        foreach (var profileType in profileTypes)
+                        {
+                            var profile = (Profile)ActivatorUtilities.CreateInstance(serviceProvider, profileType);
+                            config.AddProfile(profile);
+                        }
+
+                        config.AddProfile(new DynamicMappingProfile(options));
                     }
                 }, options.AdditionalAssemblies ?? []);
+        }
+
+        private static IEnumerable<Type> GetProfileTypes(Assembly assembly)
+        {
+            return assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass && t.IsPublic);
         }
     }
 }
