@@ -8,11 +8,11 @@ namespace DynamicAutoMapper.Console
         {
             var services = new ServiceCollection();
             services.AddLogging();
-            services.AddAutoMapper(options =>
+            services.AddAutoMapper(static options =>
             {
                 options.SourceAssembly = typeof(Source.DataDto).Assembly;
                 options.TargetAssembly = typeof(Target.Data).Assembly;
-                options.TypeFilter = (source, target) => target.Name.StartsWith(target.Name);
+                options.TypeFilter = (source, target) => source.Name.StartsWith(target.Name);
                 //options.AdditionalAssemblies.Add(typeof(DataProfile).Assembly);
             });
 
