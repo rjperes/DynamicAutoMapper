@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
@@ -15,7 +16,7 @@ namespace DynamicAutoMapper
 
     public class DynamicMappingProfile : Profile
     {
-        public DynamicMappingProfile(IOptions<DynamicMappingOptions> options)
+        public DynamicMappingProfile(IOptions<DynamicMappingOptions> options, ILogger<DynamicMappingProfile> logger)
         {
             if (options?.Value.SourceAssembly != null && options?.Value.TargetAssembly != null)
             {
@@ -29,6 +30,8 @@ namespace DynamicAutoMapper
                     foreach (var matchedTargetType in matchedTargetTypes)
                     {
                         var expression = CreateMap(sourceType, matchedTargetType);
+
+                        logger.LogInformation("Created mapping from {SourceType} to {TargetType}", sourceType.FullName, matchedTargetType.FullName);
 
                         if (options.Value.Reverse)
                         {
