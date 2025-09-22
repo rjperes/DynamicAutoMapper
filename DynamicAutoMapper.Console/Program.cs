@@ -8,6 +8,7 @@ namespace DynamicAutoMapper.Console
         {
             var services = new ServiceCollection();
             services.AddLogging();
+            services.AddOptions();
             services.AddAutoMapper(static options =>
             {
                 options.SourceAssembly = typeof(Source.DataDto).Assembly;

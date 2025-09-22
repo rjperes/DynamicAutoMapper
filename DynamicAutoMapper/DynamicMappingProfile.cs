@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace DynamicAutoMapper
@@ -14,22 +15,22 @@ namespace DynamicAutoMapper
 
     public class DynamicMappingProfile : Profile
     {
-        public DynamicMappingProfile(DynamicMappingOptions options)
+        public DynamicMappingProfile(IOptions<DynamicMappingOptions> options)
         {
-            if (options.SourceAssembly != null && options.TargetAssembly != null)
+            if (options?.Value.SourceAssembly != null && options?.Value.TargetAssembly != null)
             {
-                var sourceTypes = GetTypes(options.SourceAssembly);
-                var targetTypes = GetTypes(options.TargetAssembly);
+                var sourceTypes = GetTypes(options.Value.SourceAssembly);
+                var targetTypes = GetTypes(options.Value.TargetAssembly);
 
                 foreach (var sourceType in sourceTypes)
                 {
-                    var matchedTargetTypes = FindMatchingTypes(sourceType, targetTypes, options.TypeFilter);
+                    var matchedTargetTypes = FindMatchingTypes(sourceType, targetTypes, options.Value.TypeFilter);
 
                     foreach (var matchedTargetType in matchedTargetTypes)
                     {
                         var expression = CreateMap(sourceType, matchedTargetType);
 
-                        if (options.Reverse)
+                        if (options.Value.Reverse)
                         {
                             expression.ReverseMap();
                         }

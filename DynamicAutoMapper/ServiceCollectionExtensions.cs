@@ -10,25 +10,27 @@ namespace DynamicAutoMapper
         {
             DynamicMappingOptions options = new();
 
+            if (configureOptions != null)
+            {
+                configureOptions(options);
+
+                services.Configure(configureOptions);
+            }
+
             return services.AddAutoMapper((serviceProvider, config) =>
+            {
+                var profileTypes = (options.AdditionalAssemblies ?? [])
+                    .SelectMany(assembly => GetProfileTypes(assembly))
+                    .ToList();
+
+                foreach (var profileType in profileTypes)
                 {
-                    if (configureOptions != null)
-                    {
-                        configureOptions(options);
+                    var profile = (Profile)ActivatorUtilities.CreateInstance(serviceProvider, profileType);
+                    config.AddProfile(profile);
+                }
 
-                        var profileTypes = (options.AdditionalAssemblies ?? [])
-                            .SelectMany(assembly => GetProfileTypes(assembly))
-                            .ToList();
-
-                        foreach (var profileType in profileTypes)
-                        {
-                            var profile = (Profile)ActivatorUtilities.CreateInstance(serviceProvider, profileType);
-                            config.AddProfile(profile);
-                        }
-
-                        config.AddProfile(new DynamicMappingProfile(options));
-                    }
-                }, options.AdditionalAssemblies ?? []);
+                config.AddProfile(ActivatorUtilities.CreateInstance<DynamicMappingProfile>(serviceProvider));
+            }, options.AdditionalAssemblies ?? []);
         }
 
         private static IEnumerable<Type> GetProfileTypes(Assembly assembly)
