@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/DynamicAutoMapper.slnx
+/DynamicAutoMapper/bin
+/DynamicAutoMapper/obj
+/DynamicAutoMapper.Console/bin
+/DynamicAutoMapper.Console/obj
+/Source/bin
+/Source/obj
+/Target/bin
+/Target/obj

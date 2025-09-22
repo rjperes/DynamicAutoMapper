@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="DynamicAutoMapper.Console/DynamicAutoMapper.Console.csproj" />
+  <Project Path="DynamicAutoMapper/DynamicAutoMapper.csproj" />
+  <Project Path="Source/Source.csproj" />
+  <Project Path="Target/Target.csproj" />
+</Solution>
