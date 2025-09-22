@@ -8,6 +8,8 @@ namespace DynamicAutoMapper
     {
         public static IServiceCollection AddAutoMapper(this IServiceCollection services, Action<DynamicMappingOptions>? configureOptions = null)
         {
+            ArgumentNullException.ThrowIfNull(services);
+
             DynamicMappingOptions options = new();
 
             if (configureOptions != null)
