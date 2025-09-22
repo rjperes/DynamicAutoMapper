@@ -31,7 +31,7 @@ namespace DynamicAutoMapper
                     {
                         var expression = CreateMap(sourceType, matchedTargetType);
 
-                        logger.LogInformation("Created mapping from {SourceType} to {TargetType}", sourceType.FullName, matchedTargetType.FullName);
+                        logger.LogInformation("Created mapping from {SourceType} to {TargetType}, reverse: {Reverse}", sourceType.FullName, matchedTargetType.FullName, options.Value.Reverse);
 
                         if (options.Value.Reverse)
                         {
