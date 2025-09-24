@@ -7,10 +7,10 @@ namespace DynamicAutoMapper.Console
         public DataProfile(IService service)
         {
             CreateMap<Source.DataDto, Target.Data>()
-                .ForMember(x => x.Id, target => target.AddTransform(source => source * 10))
-                ////.AfterMap((s, t) => t.SomeValue = service.GetValue())
-                .ForMember(t => t.SomeValue, x => x.MapFrom<SomeValueResolver>())
-                .ForMember(t => t.Name, x => x.MapFrom<SomeMemberValueResolver, string?>(s => s.Name))
+                .ForMember(target => target.Id, config => config.AddTransform(value => value * 10))
+                ////.AfterMap((source, target) => target.SomeValue = service.GetValue())
+                .ForMember(target => target.SomeValue, config => config.MapFrom<SomeValueResolver>())
+                .ForMember(target => target.Name, config => config.MapFrom<SomeMemberValueResolver, string?>(source => source.Name))
                 .ReverseMap();
         }
     }
