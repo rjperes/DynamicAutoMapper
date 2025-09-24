@@ -37,7 +37,7 @@ namespace DynamicAutoMapper
 
         private static IEnumerable<Type> GetProfileTypes(Assembly assembly)
         {
-            return assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass && t.IsPublic);
+            return assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass && t.IsPublic && !t.ContainsGenericParameters);
         }
     }
 }

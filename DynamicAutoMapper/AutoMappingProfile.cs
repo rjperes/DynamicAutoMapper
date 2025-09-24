@@ -49,7 +49,7 @@ namespace DynamicAutoMapper
 
         private static IEnumerable<Type> GetTypes(Assembly assembly)
         {
-            return assembly.GetTypes().Where(x => x.IsClass && x.IsPublic && !x.IsAbstract && !x.IsInterface && !x.IsGenericType && !x.IsGenericTypeDefinition);
+            return assembly.GetTypes().Where(x => x.IsClass && x.IsPublic && !x.IsAbstract && !x.IsInterface && !x.IsGenericType && !x.IsGenericTypeDefinition && !x.ContainsGenericParameters);
         }
 
         private static IEnumerable<Type> FindMatchingTypes(Type source, IEnumerable<Type> domainModelTypes, Func<Type, Type, bool> typeFilter)
