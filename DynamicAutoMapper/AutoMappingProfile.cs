@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DynamicAutoMapper
 {
-    public class DynamicMappingOptions
+    public class AutoMappingOptions
     {
         public Assembly? SourceAssembly { get; set; }
         public Assembly? TargetAssembly { get; set; }
@@ -14,9 +14,9 @@ namespace DynamicAutoMapper
         public Func<Type, Type, bool> TypeFilter { get; set; } = (source, target) => source.Name.StartsWith(target.Name);
     }
 
-    public class DynamicMappingProfile : Profile
+    public class AutoMappingProfile : Profile
     {
-        public DynamicMappingProfile(IOptions<DynamicMappingOptions> options, ILogger<DynamicMappingProfile> logger)
+        public AutoMappingProfile(IOptions<AutoMappingOptions> options, ILogger<AutoMappingProfile> logger)
         {
             if (options?.Value?.SourceAssembly != null && options?.Value?.TargetAssembly != null)
             {
