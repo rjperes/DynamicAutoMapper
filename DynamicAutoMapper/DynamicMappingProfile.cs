@@ -18,6 +18,7 @@ namespace DynamicAutoMapper
     {
         public DynamicMappingProfile(IOptions<DynamicMappingOptions> options, ILogger<DynamicMappingProfile> logger)
         {
+            return;
             if (options?.Value.SourceAssembly != null && options?.Value.TargetAssembly != null)
             {
                 var sourceTypes = GetTypes(options.Value.SourceAssembly);

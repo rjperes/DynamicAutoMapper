@@ -1,5 +1,4 @@
-﻿using AutoMapper.Internal;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace DynamicAutoMapper.Console
 {
@@ -10,7 +9,7 @@ namespace DynamicAutoMapper.Console
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddOptions();
-            services.AddAutoMapper(static options =>
+            services.AddDynamicAutoMapper(static options =>
             {
                 options.SourceAssembly = typeof(Source.DataDto).Assembly;
                 options.TargetAssembly = typeof(Target.Data).Assembly;
@@ -19,12 +18,14 @@ namespace DynamicAutoMapper.Console
             });
 
             services.AddSingleton<IService, SomeService>();
+            services.AddSingleton<SomeValueResolver>();
+            services.AddSingleton<SomeMemberValueResolver>();
 
-            var serviceProvider = services.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
 
             var mapper = serviceProvider.GetRequiredService<AutoMapper.IMapper>();
 
-            foreach (var typeMap in mapper.ConfigurationProvider.Internal().GetAllTypeMaps())
+            foreach (var typeMap in mapper.GetAllTypeMaps())
             {
                 System.Console.WriteLine($"{typeMap.SourceType.Name} -> {typeMap.DestinationType.Name}");
             }

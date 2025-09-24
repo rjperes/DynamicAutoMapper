@@ -6,22 +6,22 @@ namespace DynamicAutoMapper
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAutoMapper(this IServiceCollection services, Action<DynamicMappingOptions>? configureOptions = null)
+        public static IServiceCollection AddDynamicAutoMapper(this IServiceCollection services, Action<DynamicMappingOptions>? configureOptions = null)
         {
             ArgumentNullException.ThrowIfNull(services);
 
-            DynamicMappingOptions options = new();
+            DynamicMappingOptions? options = default;
 
             if (configureOptions != null)
             {
+                options ??= new DynamicMappingOptions();
                 configureOptions(options);
-
                 services.Configure(configureOptions);
             }
 
             return services.AddAutoMapper((serviceProvider, config) =>
             {
-                var profileTypes = (options.AdditionalAssemblies ?? [])
+                var profileTypes = (options?.AdditionalAssemblies ?? [])
                     .SelectMany(assembly => GetProfileTypes(assembly))
                     .ToList();
 
@@ -32,7 +32,7 @@ namespace DynamicAutoMapper
                 }
 
                 config.AddProfile(ActivatorUtilities.CreateInstance<DynamicMappingProfile>(serviceProvider));
-            }, options.AdditionalAssemblies ?? []);
+            }, Array.Empty<Assembly>());
         }
 
         private static IEnumerable<Type> GetProfileTypes(Assembly assembly)
