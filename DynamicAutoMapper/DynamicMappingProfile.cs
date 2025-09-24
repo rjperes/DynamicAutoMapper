@@ -18,8 +18,7 @@ namespace DynamicAutoMapper
     {
         public DynamicMappingProfile(IOptions<DynamicMappingOptions> options, ILogger<DynamicMappingProfile> logger)
         {
-            return;
-            if (options?.Value.SourceAssembly != null && options?.Value.TargetAssembly != null)
+            if (options?.Value?.SourceAssembly != null && options?.Value?.TargetAssembly != null)
             {
                 var sourceTypes = GetTypes(options.Value.SourceAssembly);
                 var targetTypes = GetTypes(options.Value.TargetAssembly);
@@ -30,9 +29,14 @@ namespace DynamicAutoMapper
 
                     foreach (var matchedTargetType in matchedTargetTypes)
                     {
+                        if (sourceType == matchedTargetType)
+                        {
+                            continue;
+                        }
+
                         var expression = CreateMap(sourceType, matchedTargetType);
 
-                        logger.LogInformation("Created mapping from {SourceType} to {TargetType}, reverse: {Reverse}", sourceType.FullName, matchedTargetType.FullName, options.Value.Reverse);
+                        logger.LogInformation("Created map from {SourceType} to {TargetType}, reverse: {Reverse}", sourceType.FullName, matchedTargetType.FullName, options.Value.Reverse);
 
                         if (options.Value.Reverse)
                         {
