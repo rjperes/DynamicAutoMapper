@@ -11,3 +11,4 @@
 /Source/obj
 /Target/bin
 /Target/obj
+/publish_nuget.cmd
