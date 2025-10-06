@@ -12,6 +12,7 @@ namespace DynamicAutoMapper
         public List<Assembly> AdditionalAssemblies { get; set; } = [];
         public bool Reverse { get; set; } = true;
         public Func<Type, Type, bool> TypeFilter { get; set; } = (source, target) => source.Name.StartsWith(target.Name);
+        public Predicate<Type> ShouldMapType { get; set; } = type => true;
     }
 
     public class AutoMappingProfile : Profile
@@ -23,8 +24,15 @@ namespace DynamicAutoMapper
                 var sourceTypes = GetTypes(options.Value.SourceAssembly);
                 var targetTypes = GetTypes(options.Value.TargetAssembly);
 
+                var shouldMapType = options.Value.ShouldMapType ?? (type => true);
+
                 foreach (var sourceType in sourceTypes)
                 {
+                    if (!shouldMapType(sourceType))
+                    {
+                        continue;
+                    }
+
                     var matchedTargetTypes = FindMatchingTypes(sourceType, targetTypes, options.Value.TypeFilter);
 
                     foreach (var matchedTargetType in matchedTargetTypes)
