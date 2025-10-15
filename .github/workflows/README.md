@@ -29,10 +29,11 @@ You can also trigger the workflow manually from the GitHub Actions UI:
 2. **Setup .NET** - Installs .NET 9.0 SDK
 3. **Restore dependencies** - Restores NuGet packages
 4. **Build** - Builds the solution in Release configuration
-5. **Extract version** - Extracts version from tag or manual input
-6. **Pack** - Creates the NuGet package with specified version
-7. **Publish** - Publishes to NuGet.org using API key
-8. **Upload artifacts** - Uploads the .nupkg file as workflow artifact
+5. **Run tests** - Runs unit tests if they exist
+6. **Extract version** - Extracts version from tag or manual input
+7. **Pack** - Creates the NuGet package with specified version
+8. **Publish** - Publishes to NuGet.org using API key
+9. **Upload artifacts** - Uploads the .nupkg file as workflow artifact
 
 ### Required Secrets
 
