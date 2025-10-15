@@ -8,6 +8,8 @@ This repository includes a GitHub Actions workflow that automatically publishes 
 
 ### How to Publish
 
+#### Option 1: Using Version Tags (Recommended)
+
 1. Ensure your code is ready for release
 2. Create and push a version tag:
    ```bash
@@ -18,6 +20,14 @@ This repository includes a GitHub Actions workflow that automatically publishes 
    - Build the project in Release configuration
    - Pack the NuGet package with the version from the tag
    - Publish to NuGet.org
+
+#### Option 2: Manual Trigger
+
+1. Go to the Actions tab in the repository
+2. Select "Publish NuGet Package" workflow
+3. Click "Run workflow"
+4. Enter the version number (e.g., 1.0.0)
+5. Click "Run workflow" button
 
 ### Prerequisites
 
